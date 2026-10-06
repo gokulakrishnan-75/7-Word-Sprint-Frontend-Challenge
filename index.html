@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thirukkural 421 — The Impregnable Fortress | An Interactive Historical Movie</title>
+  <meta name="description" content="Experience Thirukkural 421 as an interactive cinematic historical war film. Step into the shoes of King Arivan, make the life-or-death decision, and discover why wisdom is the unfailing fortress.">
+
+  <!-- Cinematic & Tamil Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700;800;900&family=Marcellus&family=Noto+Serif+Tamil:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="cinematic-body">
+
+  <!-- Anamorphic 2.39:1 Letterbox Bars -->
+  <div class="letterbox-bar letterbox-top" id="letterboxTop" aria-hidden="true"></div>
+  <div class="letterbox-bar letterbox-bottom" id="letterboxBottom" aria-hidden="true"></div>
+
+  <!-- Dynamic Atmospheric Canvas (Embers, Mist, Fog, Dust, Gold Runes) -->
+  <canvas id="ambientCanvas" aria-hidden="true"></canvas>
+
+  <!-- Film Grain & Lighting Overlay (Vignette removed) -->
+  <div class="cinema-vfx-overlay" id="vfxOverlay" aria-hidden="true">
+    <div class="film-grain"></div>
+    <div class="flash-bang-layer" id="flashLayer"></div>
+    <div class="light-ray-layer" id="lightRayLayer"></div>
+  </div>
+
+  <!-- Top Minimalist Cinema Header Controls -->
+  <header class="cinema-header" id="cinemaHeader">
+    <div class="header-left">
+      <div class="kural-brand-badge" id="btnHeaderBrand" style="cursor: pointer;" title="திருக்குறள் 421 & கதையின் நீதி (View Moral & Kural)">
+        <span class="brand-glyph">✦</span>
+        <span class="brand-text">திருக்குறள் 421</span>
+        <span class="brand-tag">அறிவே அரண்</span>
+      </div>
+      <div class="scene-chapter-indicator" id="chapterIndicator">
+        <span class="chapter-dot pulse"></span>
+        <span class="chapter-label" id="chapterLabel">PROLOGUE : THE RISING SUN</span>
+      </div>
+    </div>
+
+    <!-- Chapter Timeline Progress Bar with Interactive Chapter Marker Dots -->
+    <div class="cinema-timeline-bar" id="timelineBar" title="Interactive Story Timeline (Click any chapter marker to jump)">
+      <div class="timeline-fill" id="timelineFill"></div>
+      <div class="timeline-dots-track" id="timelineDotsTrack"></div>
+    </div>
+
+    <div class="header-right">
+      <!-- 3D Boy Narrator Guide Toggle Button -->
+      <button class="cinema-btn-icon boy-guide-toggle-btn active-gold" id="btnHeaderBoyGuide" title="3D Story Narrator Elango (வழிகாட்டி இளங்கோ - Click to toggle 3D boy narrator)" aria-label="3D Boy Guide">
+        <span class="guide-avatar-icon">🧒</span>
+        <span class="btn-text-sm" id="boyGuideStatusText">ELANGO 3D</span>
+      </button>
+
+      <!-- Modern Animations FX Toggle Button -->
+      <button class="cinema-btn-icon modern-fx-toggle-btn active-gold" id="btnModernFx" title="Modern Animation FX Mode (நவீன அசைவூட்டு முறை - Click to toggle 3D motion & glowing effects)" aria-label="Modern Animation FX">
+        <span class="fx-icon-spark">⚡</span>
+        <span class="btn-text-sm" id="fxStatusLabel">MODERN FX</span>
+      </button>
+
+      <!-- Direct Jump to Moral & Thirukkural -->
+      <button class="cinema-btn-icon active-gold" id="btnHeaderMoral" title="கதையின் நீதி & திருக்குறள் 421 (View Moral & Kural)" aria-label="Moral and Kural">
+        <span>📜</span>
+        <span class="btn-text-sm">நீதி & குறள்</span>
+      </button>
+
+      <!-- Text-to-Speech Voice Narration Toggle (Reads Captions Aloud) -->
+      <button class="cinema-btn-icon active-gold" id="btnToggleSpeech" title="Toggle Spoken Voice Narration (Captions Read Aloud)" aria-label="Toggle Voice Narration">
+        <span id="voiceIcon">🗣️</span>
+        <span class="btn-text-sm" id="voiceStatusText">VOICE ON</span>
+      </button>
+
+      <!-- Language Selector -->
+      <button class="cinema-btn-icon" id="btnToggleLang" title="Switch Language (Tamil / English)" aria-label="Language Toggle">
+        <span>🌐</span>
+        <span class="btn-text-sm" id="langLabel">ENGLISH</span>
+      </button>
+
+      <!-- Anamorphic Aspect Toggle -->
+      <button class="cinema-btn-icon" id="btnToggleCinemaBars" title="Toggle 2.39:1 Anamorphic Cinema Bars" aria-label="Toggle Cinema Bars">
+        <span>🎬</span>
+      </button>
+
+      <!-- Previous Slide Navigation Button in Header -->
+      <button class="cinema-btn-icon" id="btnHeaderPrev" title="Go to Previous Slide (முந்தைய காட்சி)" aria-label="Previous Slide">
+        <span>◀</span>
+        <span class="btn-text-sm">PREV</span>
+      </button>
+
+      <!-- Replay / Quick Restart -->
+      <button class="cinema-btn-icon" id="btnRestartStory" title="Restart Experience" aria-label="Restart Story">
+        <span>↺</span>
+      </button>
+
+      <!-- Home Icon Button: Return to Starting Landing Page -->
+      <button class="cinema-btn-icon home-nav-btn active-gold" id="btnTopHome" title="Return to Starting Landing Page (முகப்புப் பக்கம்)" aria-label="Return to Home">
+        <span class="home-icon">🏠</span>
+        <span class="btn-text-sm">HOME</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Floating Top-Right Persistent Home Button (Always visible on all screens) -->
+  <button class="floating-home-btn" id="btnFloatingHome" title="Return to Starting Landing Page (முகப்புப் பக்கம்)" aria-label="Return to Home">
+    <span class="home-icon-symbol">🏠</span>
+    <span class="home-tooltip">HOME</span>
+  </button>
+
+  <!-- Master Cinematic Viewport Stage -->
+  <main class="cinema-stage-viewport" id="cinemaStage">
+
+    <!-- Cinematic Slide Transition Wipe & Anamorphic Flare Layer -->
+    <div class="slide-transition-fx-layer" id="slideTransitionLayer" aria-hidden="true">
+      <div class="transition-lens-streak"></div>
+      <div class="transition-iris-shutter"></div>
+      <div class="transition-light-beam"></div>
+      <div class="transition-gold-dust"></div>
+    </div>
+
+    <!-- Interactive Slide Hotspots Layer (Pulsing Discovery Nodes) -->
+    <div class="slide-hotspots-container" id="slideHotspotsContainer"></div>
+
+    <!-- ====================================================================
+         0. STARTING CINEMATIC LANDING PAGE (HERO ENTRY SCREEN)
+         ==================================================================== -->
+    <section class="landing-page-screen active" id="landingPageScreen" aria-label="Welcome Landing Page">
+      <div class="landing-backdrop" style="background-image: url('assets/fortress_sunrise.jpg');"></div>
+      
+      <div class="landing-content-card">
+        <div class="landing-badge">
+          <span class="badge-spark">✦</span>
+          <span>ANCIENT TAMIL SANGAM HISTORICAL EXPERIENCE</span>
+          <span class="badge-spark">✦</span>
+        </div>
+
+        <h1 class="landing-main-title">
+          <span class="landing-kural-tamil">அறிவே அரண்</span>
+          <span class="landing-kural-english">THE IMPREGNABLE FORTRESS</span>
+        </h1>
+
+        <div class="landing-kural-scripture-preview">
+          <p class="landing-scripture-line">“அறிவற்றங் காக்குங் கருவி செறுவார்க்கும்”</p>
+          <p class="landing-scripture-line">“உள்ளழிக்க லாகா அரண்.”</p>
+          <div class="landing-scripture-tag">— திருக்குறள் 421 (THIRUKKURAL 421)</div>
+        </div>
+
+        <p class="landing-narrative-lead">
+          50,000 படைவீரர்களும் 400 போரியானைகளும் அரண்மலையை நோக்கி முன்னேறுகின்றன. 
+          12,000 வீரர்களை மட்டுமே கொண்ட சிறிய ராஜ்ஜியம். வெறும் பலத்தால் வெல்ல முடியாத போது, மனிதனின் அறிவே வெல்ல முடியாத அரணாக மாறுகிறது.
+        </p>
+
+        <p class="landing-narrative-lead-en">
+          A colossal army of 50,000 soldiers descends upon Aranmalai. When raw power cannot prevail, step into the shoes of the king and discover why wisdom is an impregnable fortress.
+        </p>
+
+        <div class="landing-features-strip">
+          <div class="feature-item"><span>🎬</span> Cinematic Ancient Movie</div>
+          <div class="feature-item"><span>🗣️</span> Spoken Voice in Tamil</div>
+          <div class="feature-item"><span>⚔️</span> Real Interactive Decisions</div>
+          <div class="feature-item"><span>📜</span> திருக்குறள் 421 கதையின் நீதி</div>
+        </div>
+
+        <div class="landing-cta-container">
+          <button class="cinema-btn primary pulse-gold landing-start-btn" id="btnEnterFromLanding">
+            <span class="cta-tamil">கதையைத் தொடங்கு</span>
+            <span class="cta-divider">•</span>
+            <span class="cta-eng">ENTER THE STORY</span>
+            <span class="btn-arrow">▶</span>
+          </button>
+          <button class="cinema-btn secondary landing-moral-quick-btn" id="btnLandingToMoral" title="View Moral of the Story and Thirukkural 421">
+            <span>📜</span>
+            <span>நீதி & திருக்குறள் • MORAL & KURAL</span>
+          </button>
+        </div>
+
+        <p class="landing-audio-note">
+          🗣️ ஒவ்வொரு காட்சிக்கும் தெளிவான தமிழ் குரல் விளக்கம் (Clear Spoken Tamil Narration) ஒலிக்கும்.
+        </p>
+      </div>
+    </section>
+
+    <!-- DUAL VIDEO BUFFERS FOR SEAMLESS ZERO-FLASH CROSSFADES -->
+    <div class="media-layer video-container" id="videoContainer">
+      <video id="videoA" class="cinema-video active" playsinline muted loop preload="auto"></video>
+      <video id="videoB" class="cinema-video standby" playsinline muted loop preload="auto"></video>
+    </div>
+
+    <!-- DUAL PHOTOREALISTIC IMAGE BACKDROPS WITH KEN BURNS ZOOM & PARALLAX -->
+    <div class="media-layer image-container" id="imageContainer">
+      <div id="imageBackdropA" class="cinema-image active"></div>
+      <div id="imageBackdropB" class="cinema-image standby"></div>
+    </div>
+
+    <!-- ====================================================================
+         DYNAMIC ANIMATED SCENE OVERLAYS (Battle, Arrows, March, Kings, Sunrise, Mist, Hearth)
+         ==================================================================== -->
+
+    <!-- 0. ANIMATED SCENE: SUNRISE RIVER & KANNAN (Dawn Rays, Glistening River Ripples, Wisdom Dust) -->
+    <div class="cinematic-animated-layer" id="animSunriseRiver" aria-hidden="true">
+      <div class="sunrise-rays-layer"></div>
+      <div class="sunrise-sun-orb"></div>
+      <div class="river-glisten-water">
+        <div class="water-ripple wr1"></div>
+        <div class="water-ripple wr2"></div>
+        <div class="water-ripple wr3"></div>
+      </div>
+      <div class="dawn-wisdom-pollen"></div>
+      <div class="dawn-birds-flight">
+        <span class="bird-fly b-1">🦅</span>
+        <span class="bird-fly b-2">🕊️</span>
+      </div>
+    </div>
+
+    <!-- 1. ANIMATED SCENE: BORDERLANDS MIST & CLIFFS (Rolling Mist, Soaring Eagle, Signal Beacon) -->
+    <div class="cinematic-animated-layer" id="animBorderlandsMist" aria-hidden="true">
+      <div class="borderlands-mist-drift mist-back"></div>
+      <div class="borderlands-mist-drift mist-mid"></div>
+      <div class="borderlands-soaring-eagle"></div>
+      <div class="mountain-signal-beacon">
+        <div class="beacon-glow"></div>
+        <div class="beacon-smoke"></div>
+      </div>
+    </div>
+
+    <!-- 2. ANIMATED SCENE: KING GOING TO THE WAR (Marching Ranks, Elephants, Torches, War Banners) -->
+    <div class="cinematic-animated-layer" id="animKingMarch" aria-hidden="true">
+      <div class="anim-march-smoke-layer"></div>
+      <div class="anim-torch-glows-layer">
+        <div class="torch-fire torch-1"></div>
+        <div class="torch-fire torch-2"></div>
+        <div class="torch-fire torch-3"></div>
+      </div>
+      <div class="anim-war-banner-strip">
+        <div class="tiger-banner-svg">
+          <span class="banner-crest">🐅</span>
+          <span class="banner-text">வேல்நாடு • 50,000 படைகள் போருக்குப் புறப்பாடு</span>
+        </div>
+      </div>
+      <div class="anim-marching-ranks">
+        <div class="spear-rank rank-back"></div>
+        <div class="spear-rank rank-mid"></div>
+        <div class="spear-rank rank-front"></div>
+        <div class="war-elephant-silhouette"></div>
+      </div>
+      <div class="anim-war-dust-drift"></div>
+    </div>
+
+    <!-- 3. ANIMATED SCENE: WAR BETWEEN TWO KINGS (Epic Face-off & Clash Beam) -->
+    <div class="cinematic-animated-layer" id="animTwoKings" aria-hidden="true">
+      <div class="two-kings-split-stage">
+        <!-- King Veeran Side (Crimson Conqueror) -->
+        <div class="king-duel-side king-veeran-side">
+          <div class="king-duel-bg" style="background-image: url('assets/king_veeran.jpg');"></div>
+          <div class="king-duel-aura crimson-aura"></div>
+          <div class="king-duel-badge">
+            <span class="king-title-tamil">மன்னன் வீரன் • வேல்நாடு</span>
+            <span class="king-stats">⚔️ 50,000 படைவீரர்கள் • 400 போரியானைகள்</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Energy Clash Divider -->
+        <div class="kings-clash-divider">
+          <div class="clash-lightning-beam"></div>
+          <div class="clash-center-spark">⚡</div>
+          <div class="clash-vs-emblem">VS</div>
+        </div>
+
+        <!-- King Arivan Side (Gold/Cyan Wisdom Defender) -->
+        <div class="king-duel-side king-arivan-side">
+          <div class="king-duel-bg" style="background-image: url('assets/king_arivan.jpg');"></div>
+          <div class="king-duel-aura gold-aura"></div>
+          <div class="king-duel-badge">
+            <span class="king-title-tamil">மன்னன் அறிவன் • அரண்மலை</span>
+            <span class="king-stats">🧠 12,000 வீரர்கள் • அறிவே அரண்</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. ANIMATED SCENE: SOLDIER MARAVAN FAMILY & HEARTH (Warm Oil Lamp, Amber Glow) -->
+    <div class="cinematic-animated-layer" id="animFamilyHearth" aria-hidden="true">
+      <div class="hearth-lamp-glow">
+        <div class="oil-lamp-fixture">
+          <div class="lamp-flame-core"></div>
+          <div class="lamp-warm-halo"></div>
+        </div>
+      </div>
+      <div class="hearth-floating-sparks"></div>
+      <div class="family-protective-aura">
+        <div class="hearth-caption-tag">அகல் விளக்கு • அமைதியான குடும்பத்தின் எதிர்காலம்</div>
+      </div>
+    </div>
+
+    <!-- 5. ANIMATED SCENE: FIGHT OF THE WAR (Real Ballistic Arced Flaming War Arrows & Volleys) -->
+    <div class="cinematic-animated-layer" id="animWarFight" aria-hidden="true">
+      
+      <!-- Overhauled Ballistic War Arrow Volley Layer -->
+      <div class="battle-arrow-volley-layer" id="arrowVolleyLayer">
+        <!-- Wave 1: Towering High Ballistic Arcs (Left to Right) -->
+        <div class="war-arrow arrow-arc-high a-h1">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-arc-high a-h2">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-arc-high a-h3">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-arc-high a-h4">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+
+        <!-- Wave 2: Mid-Range Piercing Volleys -->
+        <div class="war-arrow arrow-arc-mid a-m1">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-arc-mid a-m2">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-arc-mid a-m3">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-arc-mid a-m4">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+
+        <!-- Wave 3: Fast Skimming Ground Strikes -->
+        <div class="war-arrow arrow-arc-low a-l1">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-arc-low a-l2">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+
+        <!-- Wave 4: Counter-Fire Volley from Defenders (Right to Left) -->
+        <div class="war-arrow arrow-counter a-c1">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+        <div class="war-arrow arrow-counter a-c2">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-flame"></div>
+          <div class="arrow-smoke"></div>
+        </div>
+      </div>
+
+      <!-- Arrow Ground Impacts & Explosive Spark Bursts -->
+      <div class="battle-clash-sparks-layer">
+        <div class="clash-impact impact-1"></div>
+        <div class="clash-impact impact-2"></div>
+        <div class="clash-impact impact-3"></div>
+        <div class="arrow-impact-strike st-1"></div>
+        <div class="arrow-impact-strike st-2"></div>
+      </div>
+      
+      <div class="battle-frontline-silhouettes">
+        <div class="clashing-soldiers"></div>
+      </div>
+      <div class="battle-embers-rise"></div>
+
+      <!-- Interactive Shield Deflector Action (Modern Interactive Feature) -->
+      <div class="interactive-shield-action-dock" id="interactiveShieldDock">
+        <button class="cinema-btn modern-glow-btn shield-deflect-btn pulse-gold" id="btnShieldDeflect" title="Click to raise shield and deflect arrow volley!">
+          <span class="shield-icon">🛡️</span>
+          <span class="shield-label">கவசம் ஏந்து • DEFLECT ARROW VOLLEY</span>
+          <span class="shield-spark">⚡</span>
+        </button>
+      </div>
+      <div class="shield-energy-shockwave" id="shieldShockwave"></div>
+    </div>
+
+    <!-- 6. ANIMATED SCENE: ROYAL WAR COUNCIL (Flickering Torches, Emergency Sonar Pulse) -->
+    <div class="cinematic-animated-layer" id="animWarCouncil" aria-hidden="true">
+      <div class="council-torches-flicker">
+        <div class="c-torch t-left"></div>
+        <div class="c-torch t-right"></div>
+      </div>
+      <div class="council-sonar-pulse"></div>
+      <div class="council-shadow-drift"></div>
+    </div>
+
+    <!-- 7. ANIMATED SCENE: PEACEFUL DAWN & BLOODLESS TRIUMPH (Golden Light Pillar, Lotus Petals) -->
+    <div class="cinematic-animated-layer" id="animPeaceDawn" aria-hidden="true">
+      <div class="peace-light-pillar"></div>
+      <div class="peace-petals-shower">
+        <span class="falling-petal p1">🌸</span>
+        <span class="falling-petal p2">✨</span>
+        <span class="falling-petal p3">🌸</span>
+        <span class="falling-petal p4">✨</span>
+        <span class="falling-petal p5">🌸</span>
+        <span class="falling-petal p6">✨</span>
+      </div>
+      <div class="peace-golden-radiance"></div>
+    </div>
+
+    <!-- TACTICAL PARCHMENT MAP OVERLAY (Interactive SVG war map) -->
+    <div class="interactive-overlay tactical-map-layer" id="tacticalMapLayer">
+      <div class="map-parchment-frame">
+        <div class="map-header">
+          <span class="map-compass">🧭</span>
+          <h2 class="map-title" id="mapTitle">ANCIENT KONGU BORDERLANDS • TACTICAL CARTOGRAPHY</h2>
+          <span class="map-scale">1 LEAGUE = 10 MILES</span>
+        </div>
+        
+        <svg class="tactical-svg" id="tacticalSvg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <linearGradient id="enemyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff3333"/>
+              <stop offset="100%" stop-color="#880000"/>
+            </linearGradient>
+            <linearGradient id="allyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00e5ff"/>
+              <stop offset="100%" stop-color="#006699"/>
+            </linearGradient>
+            <linearGradient id="goldRoute" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ffd700"/>
+              <stop offset="50%" stop-color="#fff275"/>
+              <stop offset="100%" stop-color="#ffae00"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Topographical Background Contours -->
+          <path class="contour-line" d="M 50,150 Q 200,80 400,120 T 800,100" />
+          <path class="contour-line" d="M 50,220 Q 300,180 550,240 T 950,200" />
+          <path class="contour-line" d="M 80,450 Q 350,380 600,430 T 920,400" />
+
+          <!-- River Palar -->
+          <path class="map-river" d="M 120,0 C 250,180 180,320 320,450 S 520,550 620,600" />
+          <text x="210" y="270" class="map-river-label">வேகவதி ஆறு (RIVER PALAR)</text>
+
+          <!-- Mountain Ridges (Barriers) -->
+          <g class="map-mountains">
+            <polygon points="400,280 440,200 480,280" class="mountain-poly" />
+            <polygon points="460,290 510,180 560,290" class="mountain-poly" />
+            <polygon points="530,300 580,210 630,300" class="mountain-poly" />
+            <polygon points="610,290 660,190 710,290" class="mountain-poly" />
+            <text x="500" y="250" class="mountain-label">கொல்லி மலைக் கணவாய் (VALLEY PASS)</text>
+          </g>
+
+          <!-- Velnadu Kingdom Territory (Enemy: Red) -->
+          <g class="kingdom-zone velnadu-zone" id="zoneVelnadu">
+            <circle cx="820" cy="180" r="75" class="zone-circle enemy" />
+            <circle cx="820" cy="180" r="12" class="citadel-node enemy" />
+            <text x="820" y="140" class="zone-title enemy">வேல்நாடு (VELNADU)</text>
+            <text x="820" y="160" class="zone-subtitle">50,000 SOLDIERS • WEALTH</text>
+            <!-- Camp battalions -->
+            <rect x="750" y="230" width="35" height="18" class="army-icon enemy" />
+            <rect x="795" y="230" width="35" height="18" class="army-icon enemy" />
+            <rect x="840" y="230" width="35" height="18" class="army-icon enemy" />
+          </g>
+
+          <!-- Aranmalai Kingdom Territory (Player: Blue/Gold) -->
+          <g class="kingdom-zone aranmalai-zone" id="zoneAranmalai">
+            <circle cx="180" cy="400" r="65" class="zone-circle ally" />
+            <circle cx="180" cy="400" r="10" class="citadel-node ally" />
+            <text x="180" y="360" class="zone-title ally">அரண்மலை (ARANMALAI)</text>
+            <text x="180" y="380" class="zone-subtitle">12,000 SOLDIERS • WISDOM</text>
+            <!-- Defense posts -->
+            <circle cx="280" cy="360" r="6" class="post-node" />
+            <circle cx="240" cy="460" r="6" class="post-node" />
+          </g>
+
+          <!-- Direct Assault Vector (Red Arrow - The Strength Mistake) -->
+          <path id="pathAssault" class="vector-arrow assault-vector" d="M 230,370 L 730,230" marker-end="url(#arrowRed)" />
+
+          <!-- Secret Scout Reconnaissance Route (Dashed Green) -->
+          <path id="pathScout" class="vector-arrow scout-vector" d="M 210,360 Q 350,150 510,170 T 700,210" />
+
+          <!-- CRITICAL DISCOVERY: Vulnerable Mountain Supply Route (Glow Gold) -->
+          <path id="pathSupplyRoute" class="vector-arrow supply-route-vector" d="M 850,120 Q 750,70 600,100 T 480,180" />
+          <g id="supplyMarkerGroup" class="supply-marker-group">
+            <circle cx="580" cy="140" r="18" class="supply-pulse-ring" />
+            <circle cx="580" cy="140" r="8" class="supply-node-core" />
+            <text x="580" y="115" class="supply-label">ஒற்றை உணவு விநியோகப் பாதை</text>
+            <text x="580" y="175" class="supply-sublabel">VITAL SUPPLY ARTERY (50,000 TROOPS DEPEND ON THIS)</text>
+          </g>
+
+          <!-- Valley Chokepoint Ambush / Blockade Zone -->
+          <g id="chokepointGroup" class="chokepoint-group">
+            <rect x="470" y="195" width="80" height="30" class="chokepoint-rect" rx="4" />
+            <text x="510" y="215" class="chokepoint-label">CHOKEPOINT</text>
+          </g>
+        </svg>
+
+        <!-- Interactive Map Action Bar -->
+        <div class="map-action-bar" id="mapActionBar">
+          <div class="strategy-step-pill" id="stepObserve">1. OBSERVE</div>
+          <div class="strategy-step-arrow">→</div>
+          <div class="strategy-step-pill" id="stepUnderstand">2. UNDERSTAND</div>
+          <div class="strategy-step-arrow">→</div>
+          <div class="strategy-step-pill" id="stepAnalyze">3. ANALYZE</div>
+          <div class="strategy-step-arrow">→</div>
+          <div class="strategy-step-pill" id="stepStrategize">4. STRATEGIZE</div>
+          <div class="strategy-step-arrow">→</div>
+          <div class="strategy-step-pill" id="stepAct">5. EXECUTE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE TACTICAL WAR HUD (Scene 7 & Decision Scenes) -->
+    <div class="decision-stats-hud" id="decisionStatsHud" aria-live="polite">
+      <div class="hud-panel hud-ally">
+        <div class="hud-king-crest">👑 அரண்மலை • ARANMALAI</div>
+        <div class="hud-stat-row">
+          <span class="hud-label">YOUR ARMY:</span>
+          <span class="hud-value ally-val" id="statAllyArmy">12,000</span>
+        </div>
+        <div class="hud-stat-row">
+          <span class="hud-label">TREASURY:</span>
+          <span class="hud-value warn-val" id="statTreasury">LOW (3 DAYS)</span>
+        </div>
+        <div class="hud-stat-row">
+          <span class="hud-label">WEAPONS:</span>
+          <span class="hud-value warn-val" id="statWeapons">DEFENSIVE ONLY</span>
+        </div>
+      </div>
+
+      <div class="hud-vs-badge">
+        <span class="vs-text">VS</span>
+        <span class="vs-odds">1 : 4.2 ODDS</span>
+      </div>
+
+      <div class="hud-panel hud-enemy">
+        <div class="hud-king-crest">⚔️ வேல்நாடு • VELNADU</div>
+        <div class="hud-stat-row">
+          <span class="hud-label">ENEMY ARMY:</span>
+          <span class="hud-value enemy-val" id="statEnemyArmy">50,000</span>
+        </div>
+        <div class="hud-stat-row">
+          <span class="hud-label">ELEPHANTS:</span>
+          <span class="hud-value enemy-val">400 WAR TUSKERS</span>
+        </div>
+        <div class="hud-stat-row">
+          <span class="hud-label">SUPPLIES:</span>
+          <span class="hud-value enemy-val">1 VULNERABLE ROUTE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CINEMATIC DECISION CARDS CONTAINER (Scene 8) -->
+    <div class="decision-cards-matrix" id="decisionCardsMatrix">
+      <div class="decision-instructions">
+        <h3 class="decision-prompt-title">THE NEXT DECISION IS YOURS. YOU ARE THE KING.</h3>
+        <p class="decision-prompt-sub">Hover to glimpse possible futures through King Arivan's foresight. Choose how to lead.</p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- 1. STRENGTH CARD -->
+        <div class="cinematic-card" data-choice="strength" id="cardStrength" tabindex="0">
+          <div class="card-bg" style="background-image: url('assets/war_montage.jpg');"></div>
+          <div class="card-vision-preview" id="previewStrength">
+            <span class="vision-tag">FUTURE VISION</span>
+            <div class="vision-text">CLASH & AMBUSH</div>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">⚔️</div>
+            <h4 class="card-title">STRENGTH</h4>
+            <p class="card-desc">Attack immediately. Face their 50,000 army head-on with valor.</p>
+            <div class="card-stat-tag danger">High Casualty Risk</div>
+          </div>
+        </div>
+
+        <!-- 2. MONEY CARD -->
+        <div class="cinematic-card" data-choice="money" id="cardMoney" tabindex="0">
+          <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="card-vision-preview" id="previewMoney">
+            <span class="vision-tag">FUTURE VISION</span>
+            <div class="vision-text">DRAINED TREASURY</div>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">💰</div>
+            <h4 class="card-title">MONEY</h4>
+            <p class="card-desc">Spend the remaining treasury. Hire mercenaries and import foreign arms.</p>
+            <div class="card-stat-tag warn">Buys Time, Not Victory</div>
+          </div>
+        </div>
+
+        <!-- 3. DECEPTION CARD -->
+        <div class="cinematic-card" data-choice="deception" id="cardDeception" tabindex="0">
+          <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="card-vision-preview" id="previewDeception">
+            <span class="vision-tag">FUTURE VISION</span>
+            <div class="vision-text">INTERCEPTED SCROLLS</div>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">🕊️</div>
+            <h4 class="card-title">DECEPTION</h4>
+            <p class="card-desc">Mislead the enemy with decoy messengers and false treaties.</p>
+            <div class="card-stat-tag danger">Compounded Peril</div>
+          </div>
+        </div>
+
+        <!-- 4. WISDOM CARD (The Master Path) -->
+        <div class="cinematic-card master-card" data-choice="wisdom" id="cardWisdom" tabindex="0">
+          <div class="card-bg" style="background-image: url('assets/kannan_sunrise.jpg');"></div>
+          <div class="card-vision-preview" id="previewWisdom">
+            <span class="vision-tag gold">FUTURE VISION</span>
+            <div class="vision-text">THE UNBROKEN ROUTE</div>
+          </div>
+          <div class="card-content">
+            <div class="card-icon gold-glow">🧠</div>
+            <h4 class="card-title gold-title">WISDOM</h4>
+            <p class="card-desc">Understand the enemy first. Deploy silent scouts. Map their vital dependency.</p>
+            <div class="card-stat-tag gold">The Impregnable Fortress</div>
+          </div>
+        </div>
+
+        <!-- 5. WAIT CARD -->
+        <div class="cinematic-card" data-choice="wait" id="cardWait" tabindex="0">
+          <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="card-vision-preview" id="previewWait">
+            <span class="vision-tag">FUTURE VISION</span>
+            <div class="vision-text">TIGHTENING SIEGE</div>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">⏳</div>
+            <h4 class="card-title">WAIT</h4>
+            <p class="card-desc">Do nothing. Lock the citadel gates and pray the siege breaks.</p>
+            <div class="card-stat-tag danger">Slow Strangulation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIPPLE EFFECT LAYER (Visualizing Royal Decision Consequences) -->
+    <div class="ripple-effect-layer" id="rippleLayer">
+      <div class="ripple-center-origin">
+        <div class="ripple-ring r1"></div>
+        <div class="ripple-ring r2"></div>
+        <div class="ripple-ring r3"></div>
+        <div class="ripple-ring r4"></div>
+        <div class="ripple-ring r5"></div>
+      </div>
+      <div class="ripple-stages-chain" id="rippleChain">
+        <div class="ripple-node active" data-node="king">1. KING's MIND</div>
+        <div class="ripple-conn">→</div>
+        <div class="ripple-node" data-node="army">2. ARMY MORALE</div>
+        <div class="ripple-conn">→</div>
+        <div class="ripple-node" data-node="soldier">3. SOLDIERS</div>
+        <div class="ripple-conn">→</div>
+        <div class="ripple-node" data-node="family">4. FAMILIES</div>
+        <div class="ripple-conn">→</div>
+        <div class="ripple-node" data-node="village">5. VILLAGES</div>
+        <div class="ripple-conn">→</div>
+        <div class="ripple-node" data-node="future">6. CENTURIES OF DESTINY</div>
+      </div>
+    </div>
+
+    <!-- TIME REWIND VISUAL EFFECT LAYER -->
+    <div class="rewind-fx-layer" id="rewindLayer">
+      <div class="rewind-clock-container">
+        <div class="clock-face">
+          <div class="clock-hand hour-hand"></div>
+          <div class="clock-hand minute-hand"></div>
+        </div>
+      </div>
+      <div class="rewind-title-wrap">
+        <h2 class="rewind-heading">TIME REVERSAL</h2>
+        <p class="rewind-sub">ONE DECISION CHANGED EVERYTHING • RETURNING TO THE WAR TABLE</p>
+      </div>
+    </div>
+
+    <!-- DECISION DNA COMPARISON LAYER (User Path vs Wise Path) -->
+    <div class="decision-dna-layer" id="decisionDnaLayer">
+      <div class="dna-inner-card">
+        <h3 class="dna-title">DECISION DNA — YOUR TIMELINE ANALYSIS</h3>
+        <div class="dna-timelines-wrap">
+          <div class="dna-timeline user-timeline">
+            <span class="dna-label">YOUR PATH:</span>
+            <div class="dna-chain" id="userDnaChain">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+          <div class="dna-timeline wise-timeline">
+            <span class="dna-label gold">THE PATH OF WISDOM (குறள் நெறி):</span>
+            <div class="dna-chain">
+              <span class="dna-chip gold">OBSERVE</span>
+              <span class="dna-arrow">→</span>
+              <span class="dna-chip gold">UNDERSTAND</span>
+              <span class="dna-arrow">→</span>
+              <span class="dna-chip gold">ANALYZE</span>
+              <span class="dna-arrow">→</span>
+              <span class="dna-chip gold">STRATEGIZE</span>
+              <span class="dna-arrow">→</span>
+              <span class="dna-chip gold">PROTECT</span>
+            </div>
+          </div>
+        </div>
+        <div class="dna-actions">
+          <button class="cinema-btn primary" id="btnContinueFromDna">CONTINUE THE JOURNEY</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TWO FUTURES SPLIT-SCREEN DRAGGABLE COMPARISON -->
+    <div class="split-compare-layer" id="splitCompareLayer">
+      <div class="split-side split-left" id="splitLeft">
+        <div class="split-bg impulsive-bg" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1920&q=85');"></div>
+        <div class="split-content-tag">
+          <h3>⚡ IMPULSIVE FUTURE (முரட்டு வழி)</h3>
+          <p>Strength without comprehension. Broken legions, grief-stricken villages, ruined citadel.</p>
+        </div>
+      </div>
+
+      <div class="split-side split-right" id="splitRight">
+        <div class="split-bg wise-bg" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=85');"></div>
+        <div class="split-content-tag">
+          <h3>✦ WISE FUTURE (அறிவு நெறி)</h3>
+          <p>Fortress preserved without pointless bloodshed. Soldiers return safely to waiting children.</p>
+        </div>
+      </div>
+
+      <!-- Draggable Split Handle -->
+      <div class="split-handle" id="splitHandle">
+        <div class="handle-line"></div>
+        <div class="handle-thumb">
+          <span>◀ ▶</span>
+        </div>
+        <div class="handle-line"></div>
+      </div>
+      <div class="split-instruction">DRAG TO REVEAL THE TWO FUTURES</div>
+      <button class="cinema-btn primary split-done-btn" id="btnDoneSplitCompare">PROCEED TO WISDOM FORTRESS</button>
+    </div>
+
+    <!-- THE WISDOM FORTRESS (Symbolic Citadel Layer) -->
+    <div class="wisdom-fortress-stage" id="wisdomFortressStage">
+      <div class="fortress-visual-canvas">
+        <div class="fortress-stone-base" id="fortressBase"></div>
+        <div class="fortress-concept-blocks" id="conceptBlocks">
+          <div class="concept-block" data-concept="knowledge">KNOWLEDGE • அறிவு</div>
+          <div class="concept-block" data-concept="experience">EXPERIENCE • பட்டறிவு</div>
+          <div class="concept-block" data-concept="reasoning">REASONING • பகுத்தறிவு</div>
+          <div class="concept-block" data-concept="awareness">AWARENESS • விழிப்புணர்வு</div>
+          <div class="concept-block" data-concept="patience">PATIENCE • பொறுமை</div>
+          <div class="concept-block" data-concept="strategy">STRATEGY • சூழ்ச்சி / திட்டம்</div>
+          <div class="concept-block master" data-concept="wisdom">WISDOM • அழியாத அரண்</div>
+        </div>
+
+        <!-- Incoming Symbolic Attacks -->
+        <div class="siege-attacks-layer" id="siegeAttacks">
+          <div class="attack-orb" id="atkFear">FEAR (அச்சம்)</div>
+          <div class="attack-orb" id="atkFailure">FAILURE (தோல்வி)</div>
+          <div class="attack-orb" id="atkPressure">PRESSURE (நெருக்கடி)</div>
+          <div class="attack-orb" id="atkConfusion">CONFUSION (குழப்பம்)</div>
+          <div class="attack-orb" id="atkUncertainty">UNCERTAINTY (ஐயம்)</div>
+        </div>
+      </div>
+      <div class="fortress-narration-card">
+        <h3 class="fortress-caption">“The kingdom was protected by walls. But the king was protected by wisdom.”</h3>
+        <p class="fortress-sub">Stone ramparts crumble beneath siege catapults. True wisdom alone is impenetrable.</p>
+      </div>
+    </div>
+
+    <!-- SACRED PALM-LEAF MANUSCRIPT STAGE (ஓலைச்சுவடி) -->
+    <div class="palm-leaf-stage" id="palmLeafStage">
+      <div class="palm-leaf-wrapper">
+        <div class="leaf-texture-plate">
+          <div class="leaf-thread-hole left-hole"></div>
+          <div class="leaf-thread-hole right-hole"></div>
+          <div class="leaf-inscribed-content">
+            <div class="leaf-kural-badge">திருக்குறள் — அதிகாரம் 43: அறிவுடைமை</div>
+            <h2 class="leaf-kural-tamil-title">குறள் 421</h2>
+            <div class="leaf-kural-couplet" id="leafCouplet">
+              <span class="couplet-line line-1" id="kuralLine1">அறிவற்றங் காக்குங் கருவி செறுவார்க்கும்</span>
+              <span class="couplet-line line-2" id="kuralLine2">உள்ளழிக்க லாகா அரண்.</span>
+            </div>
+            <div class="leaf-transliteration">
+              Arivatrang Kaakkung Karuvi Seruvaarkkum<br>
+              Ullazhikka Laagaa Aran.
+            </div>
+          </div>
+        </div>
+
+        <!-- Word-by-Word Architectural Exegesis -->
+        <div class="kural-exegesis-grid">
+          <div class="exegesis-card">
+            <span class="exe-word">அறிவு</span>
+            <span class="exe-gloss">Wisdom / Knowledge</span>
+            <p class="exe-expl">King Arivan stopped the instinct to react. He dispatched scouts, listened to geography, and analyzed before committing a single spear.</p>
+          </div>
+          <div class="exegesis-card">
+            <span class="exe-word">காக்கும் கருவி</span>
+            <span class="exe-gloss">Tool that Prevents Ruin</span>
+            <p class="exe-expl">Physical swords only destroy. Wisdom is the active instrument that shields human life, families, and kingdom from total destruction.</p>
+          </div>
+          <div class="exegesis-card">
+            <span class="exe-word">செறுவார்க்கும் உள்ளழிக்கல் ஆகா அரண்</span>
+            <span class="exe-gloss">Inner Impregnable Fortress</span>
+            <p class="exe-expl">Even an overwhelming foe of 50,000 soldiers cannot conquer an inner fortress built of calm foresight, insight, and strategy.</p>
+          </div>
+        </div>
+
+        <div class="leaf-quote-card">
+          “The strongest protection is not always the strongest weapon.”
+        </div>
+
+        <button class="cinema-btn primary" id="btnMorphToModern">ENTER THE MODERN BATTLEFIELD →</button>
+      </div>
+    </div>
+
+    <!-- ANCIENT TO MODERN MORPH & INTERACTIVE MODERN SCENARIOS -->
+    <div class="modern-world-stage" id="modernWorldStage">
+      <div class="modern-header">
+        <h2 class="modern-title">THE BATTLEFIELD CHANGED. THE WISDOM DID NOT.</h2>
+        <p class="modern-subtitle">Select any modern crucible. Discover how Thirukkural 421 shields you in contemporary life.</p>
+      </div>
+
+      <div class="modern-domains-selector" id="modernTabs">
+        <button class="domain-tab-btn active" data-domain="education">🎓 Education</button>
+        <button class="domain-tab-btn" data-domain="career">💼 Career</button>
+        <button class="domain-tab-btn" data-domain="tech">💻 Technology</button>
+        <button class="domain-tab-btn" data-domain="finance">📈 Finance</button>
+        <button class="domain-tab-btn" data-domain="leadership">👑 Leadership</button>
+        <button class="domain-tab-btn" data-domain="personal">🕊️ Personal Life</button>
+      </div>
+
+      <div class="modern-scenario-viewport" id="modernScenarioViewport">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+    </div>
+
+    <!-- FINAL SUNRISE EPILOGUE & RETURN OF SOLDIER MARAVAN -->
+    <div class="final-epilogue-stage" id="finalEpilogueStage">
+      <div class="final-card-cinematic">
+        <div class="final-quote-group">
+          <p class="final-quote-line">“A sword can protect a moment.”</p>
+          <p class="final-quote-line">“An army can protect a kingdom.”</p>
+          <p class="final-quote-line highlight">“But wisdom can protect an entire future.”</p>
+        </div>
+
+        <div class="final-kural-emblem">
+          <h1 class="final-kural-big">திருக்குறள் 421</h1>
+          <h2 class="final-slogan">“அறிவே அரண்.”</h2>
+          <h3 class="final-sub">WISDOM IS THE FORTRESS</h3>
+        </div>
+
+        <div class="final-soldier-reunion">
+          <p class="reunion-text">
+            Young soldier <strong>Maravan</strong>, who strapped on his spear in Scene 4, walks through the unbreached gates of Aranmalai.
+            He lifts his child into the morning sun, his home and family preserved through King Arivan’s wisdom.
+          </p>
+        </div>
+
+        <!-- The Final User Choice -->
+        <div class="final-user-choice-box">
+          <h4 class="final-choice-prompt">THE NEXT CRITICAL MOMENT WILL BE YOURS. HOW WILL YOU MEET IT?</h4>
+          <div class="final-choice-btns">
+            <button class="cinema-btn secondary" data-final="react">REACT</button>
+            <button class="cinema-btn secondary" data-final="run">RUN</button>
+            <button class="cinema-btn primary glowing-understand" data-final="understand">✨ UNDERSTAND</button>
+          </div>
+          <div style="margin-top: 1.25rem;">
+            <button class="cinema-btn primary pulse-gold" id="btnGoToMoralEnding" style="width: 100%;">
+              📜 கதையின் நீதி & திருக்குறள் • MORAL & THIRUKKURAL 421 →
+            </button>
+          </div>
+        </div>
+
+        <div class="final-credits">
+          <span>Created for Tamil Heritage & Global Moral Philosophy</span>
+          <span>•</span>
+          <button class="text-link-btn" id="btnRestartExperience">Experience Again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         12. THE GRAND ENDING PAGE : MORAL OF THE STORY & THIRUKKURAL 421
+         ==================================================================== -->
+    <div class="interactive-overlay moral-ending-stage" id="moralEndingPage" aria-label="Moral of the Story and Thirukkural">
+      <div class="moral-backdrop" style="background-image: url('assets/fortress_sunrise.jpg');"></div>
+      
+      <div class="moral-card-container">
+        <!-- Header Badge -->
+        <div class="moral-header-badge">
+          <span class="badge-spark">✦</span>
+          <span>கதையின் முடிவும் நீதியும் • THE MORAL & SACRED SCRIPTURE</span>
+          <span class="badge-spark">✦</span>
+        </div>
+
+        <!-- Thirukkural Main Presentation -->
+        <div class="moral-kural-monument">
+          <div class="kural-chapter-tag">பொருட்பால் • அரசியல் • அறிவுடைமை (CHAPTER 43: KNOWLEDGE & WISDOM)</div>
+          <h2 class="moral-kural-text-tamil">
+            அறிவற்றங் காக்குங் கருவி செறுவார்க்கும்<br>
+            உள்ளழிக்க லாகா அரண்.
+          </h2>
+          <div class="moral-kural-number">— திருக்குறள் 421 (THIRUKKURAL 421)</div>
+
+        <!-- Audio Wave Visualizer & Read Aloud Button -->
+        <div class="moral-audio-btn-wrap">
+          <div class="kural-soundwave-animator" id="moralWaveVisualizer" aria-hidden="true">
+            <span class="m-wave wb1"></span>
+            <span class="m-wave wb2"></span>
+            <span class="m-wave wb3"></span>
+            <span class="m-wave wb4"></span>
+            <span class="m-wave wb5"></span>
+            <span class="m-wave wb6"></span>
+            <span class="m-wave wb7"></span>
+            <span class="m-wave wb8"></span>
+            <span class="m-wave wb9"></span>
+            <span class="m-wave wb10"></span>
+            <span class="m-wave wb11"></span>
+            <span class="m-wave wb12"></span>
+          </div>
+          <button class="btn-read-aloud" id="btnReadMoralAloud" title="Listen to Thirukkural and Moral read aloud in Tamil" aria-label="Listen in Tamil">
+            <span class="read-icon">🔊</span>
+            <span class="read-text">🔊 திருக்குறள் & நீதி கேட்க (READ ALOUD IN TAMIL)</span>
+          </button>
+        </div>
+
+        <!-- Meaning Block -->
+        <div class="moral-meanings-grid">
+          <div class="meaning-card tamil-meaning">
+            <div class="meaning-lang-badge">வள்ளுவர் உரை (TAMIL EXPLANATION)</div>
+            <p class="meaning-para">
+              “அறிவு என்பது துன்பமும் அழிவும் வராமல் முன்கூட்டியே காக்கும் சிறந்த கருவியாகும்; பகைவராலும் உள்ளே புகுந்து அழிக்க முடியாத ஒப்பற்ற பாதுகாப்புக் கோட்டையாகும்.”
+            </p>
+          </div>
+          <div class="meaning-card english-meaning">
+            <div class="meaning-lang-badge">ENGLISH TRANSLATION</div>
+            <p class="meaning-para">
+              “Wisdom is the unfailing instrument that protects from destruction; it is an impregnable inner fortress that no enemy can ever breach or destroy.”
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================================================================
+           CREATIVE ANIMATED COMPARISON: THE TWO FORTRESSES (Stone vs Wisdom)
+           ================================================================== -->
+      <div class="fortress-comparison-arena">
+        <div class="arena-title-wrap">
+          <span class="arena-tag">✦ காட்சியியல் ஒப்பீடு • THE CINEMATIC VISUAL COMPARISON ✦</span>
+          <h3 class="arena-heading">கற்கோட்டை vs உள்ளத்து அறிவின் அரண்</h3>
+          <p class="arena-sub">பாறைகளால் கட்டப்பட்ட கோட்டையும், மனிதனின் சிந்தனையில் எழும் விவேகக் கோட்டையும்</p>
+        </div>
+
+        <div class="two-fortresses-grid">
+          <!-- 1. The Physical Stone Fortress (Cracking & Crumbling) -->
+          <div class="fortress-visual-card stone-card">
+            <div class="card-status-badge breached">⚡ தகர்க்கக்கூடியது • VULNERABLE</div>
+            <div class="fortress-canvas-art stone-fortress-art">
+              <div class="stone-rampart-silhouette">
+                <div class="stone-turret t-left"></div>
+                <div class="stone-wall-center">
+                  <div class="crack-line cl-1"></div>
+                  <div class="crack-line cl-2"></div>
+                  <div class="crack-line cl-3"></div>
+                </div>
+                <div class="stone-turret t-right"></div>
+              </div>
+              <div class="siege-impact-burst">💥</div>
+              <div class="crumbling-stone-particles">
+                <span class="debris-stone d1">▪</span>
+                <span class="debris-stone d2">▫</span>
+                <span class="debris-stone d3">▪</span>
+                <span class="debris-stone d4">▫</span>
+              </div>
+            </div>
+            <div class="fortress-card-info">
+              <h4 class="fortress-name">1. வெளிப்புறக் கற்பாறைக் கோட்டை</h4>
+              <p class="fortress-desc">
+                எவ்வளவு உயரமான பாறைக் கோட்டையானாலும், 400 போரியானைகளாலும் தொடர் முற்றுகையாலும் ஒருநாள் தகர்க்கப்பட்டுவிடும். வெறும் சுவர்கள் மனித உயிர்களை நிரந்தரமாகக் காக்காது.
+              </p>
+              <div class="fortress-footer-stat danger-stat">
+                <span>முடிவு:</span> <strong>பகைவரின் முற்றுகையால் தகரக்கூடியது</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- VS Emblem -->
+          <div class="fortresses-vs-emblem">
+            <span class="vs-glow">VS</span>
+            <span class="vs-sub">குறள் 421</span>
+          </div>
+
+          <!-- 2. The Inner Wisdom Fortress (Radiant & Indestructible) -->
+          <div class="fortress-visual-card wisdom-card">
+            <div class="card-status-badge indestructible">✦ அழியாத அரண் • INDESTRUCTIBLE</div>
+            <div class="fortress-canvas-art wisdom-fortress-art">
+              <div class="wisdom-aura-core"></div>
+              <div class="wisdom-sacred-rings">
+                <div class="ring-layer r1"></div>
+                <div class="ring-layer r2"></div>
+              </div>
+              <div class="wisdom-shimmer-particles">
+                <span class="rune-spark sp1">✦</span>
+                <span class="rune-spark sp2">அறிவு</span>
+                <span class="rune-spark sp3">✦</span>
+                <span class="rune-spark sp4">விவேகம்</span>
+              </div>
+              <div class="wisdom-shield-burst">🛡️</div>
+            </div>
+            <div class="fortress-card-info">
+              <h4 class="fortress-name gold-glow">2. உள்ளழிக்க லாகா அரண் (INNER WISDOM)</h4>
+              <p class="fortress-desc">
+                அரசன் தன் சிந்தனையில் அமைத்த கூரிய விவேகம். 50,000 படைகளும் அதன் உள்ளே நுழையவே முடியவில்லை. எதிரியால் ஒருபோதும் தகர்க்க முடியாத ஒரே கோட்டை மனிதனின் அறிவே!
+              </p>
+              <div class="fortress-footer-stat gold-stat">
+                <span>முடிவு:</span> <strong>செறுவார்க்கும் உள்ளழிக்கல் ஆகா அரண் (அழியாது)</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================================================================
+           INTERACTIVE 4 SACRED WORDS WISDOM PRISM (Word-by-Word Revelation)
+           ================================================================== -->
+      <div class="kural-wisdom-prism-section">
+        <div class="prism-header">
+          <span class="badge-spark">✦</span>
+          <span>குறள் 421 சொற் பிரிவும் மெய்யியலும் • SACRED WORD EXEGESIS</span>
+          <span class="badge-spark">✦</span>
+        </div>
+        <div class="prism-words-grid">
+          <div class="prism-word-card" tabindex="0">
+            <div class="word-card-top">
+              <span class="word-tamil">அறிவற்றங்</span>
+              <span class="word-spark">✦</span>
+            </div>
+            <div class="word-meaning-label">அறிவு + அற்றம் (FORESIGHT AGAINST RUIN)</div>
+            <p class="word-desc">அழிவு வருவதற்கு முன்னரே ஆபத்தை முன்கூட்டியே உணர்ந்து காக்கும் முன்னறிவு. பதற்றமின்றி அமைதியாக ஆராய்வது.</p>
+          </div>
+
+          <div class="prism-word-card" tabindex="0">
+            <div class="word-card-top">
+              <span class="word-tamil">காக்குங் கருவி</span>
+              <span class="word-spark">🛡️</span>
+            </div>
+            <div class="word-meaning-label">THE SHIELDING INSTRUMENT</div>
+            <p class="word-desc">வாளும் வில்லும் பிறரை அழிக்கப் பயன்படும்; ஆனால் அறிவு மட்டுமே மனித உயிர்களையும் தேசத்தையும் காக்கும் உன்னதக் கருவியாகும்.</p>
+          </div>
+
+          <div class="prism-word-card" tabindex="0">
+            <div class="word-card-top">
+              <span class="word-tamil">செறுவார்க்கும்</span>
+              <span class="word-spark">⚔️</span>
+            </div>
+            <div class="word-meaning-label">AGAINST OVERWHELMING FOES</div>
+            <p class="word-desc">ஐம்பதாயிரம் படைகளோ, கொடிய பகையோ எத்தனை பேராற்றலுடன் சூழ்ந்தாலும் அவைகளால் வெல்ல முடியாத பாதுகாப்பு.</p>
+          </div>
+
+          <div class="prism-word-card" tabindex="0">
+            <div class="word-card-top">
+              <span class="word-tamil">உள்ளழிக்க லாகா அரண்</span>
+              <span class="word-spark">🏰</span>
+            </div>
+            <div class="word-meaning-label">IMPREGNABLE INNER CITADEL</div>
+            <p class="word-desc">எதிரிகளால் ஒருபோதும் உள்ளே நுழைந்து அழிக்க முடியாத உள்ளத்து அரண். கற்பாறை உடையும்; அறிவுடைமை அழியாது.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================================================================
+           ANIMATED METRIC IMPACT STRIP (The Triumph of Foresight)
+           ================================================================== -->
+      <div class="story-impact-metric-strip">
+        <div class="metric-item">
+          <span class="metric-num">50,000</span>
+          <span class="metric-label">பகைப்படை பின்வாங்கியது (Enemy Retreat)</span>
+        </div>
+        <div class="metric-divider">•</div>
+        <div class="metric-item highlight-cyan">
+          <span class="metric-num">12,000+</span>
+          <span class="metric-label">காக்கப்பட்ட வீரர்கள் (Lives Preserved)</span>
+        </div>
+        <div class="metric-divider">•</div>
+        <div class="metric-item highlight-gold">
+          <span class="metric-num">0</span>
+          <span class="metric-label">ரத்தச் சிந்துதல் (Bloodless Victory)</span>
+        </div>
+      </div>
+
+        <!-- STORY-TO-THIRUKKURAL 421 DIRECT MATCHING SECTION -->
+        <div class="story-kural-match-section">
+          <div class="match-section-badge">✦ கதைக்கும் திருக்குறளுக்குமான நேரடிப் பொருத்தம் • THE DIRECT HARMONY ✦</div>
+          <h3 class="match-section-title">இக்கதை எவ்வாறு திருக்குறளோடு (421) பொருந்துகிறது?</h3>
+          
+          <div class="story-match-grid">
+            <!-- Match 1 -->
+            <div class="story-match-card">
+              <div class="match-kural-line">“அறிவற்றங் காக்குங் கருவி”</div>
+              <div class="match-subtag">Wisdom: The Instrument That Shields From Ruin</div>
+              <div class="match-story-detail">
+                <strong>கதையில் நடந்த நிகழ்வு:</strong> வேல்நாட்டின் 50,000 படைகளும் 400 போரியானைகளும் நாட்டை சூழ்ந்தபோது, அரசன் வெறும் பலத்தையோ கோபத்தையோ நம்பி போரிடவில்லை. அப்படி மோதியிருந்தால் 12,000 வீரர்களும் நாடும் பேரழிவை சந்தித்திருக்கும். அமைதியாக சிந்தித்து, காட்டின் விநியோகப் பாதையைக் கண்டறிந்து ரத்தமின்றி எதிரியைப் பின்வாங்கச் செய்தான்.
+              </div>
+              <div class="match-moral-takeaway">
+                <strong>கதையின் நீதி:</strong> வாழ்க்கையில் எத்தனை பெரிய நெருக்கடி வந்தாலும் பதற்றமோ கோபமோ அடையாமல், விவேகத்தோடு ஆராய்வதே பேரழிவைத் தடுக்கும் உண்மையான கருவியாகும்.
+              </div>
+            </div>
+
+            <!-- Match 2 -->
+            <div class="story-match-card">
+              <div class="match-kural-line">“செறுவார்க்கும் உள்ளழிக்கல் ஆகா அரண்”</div>
+              <div class="match-subtag">The Indestructible Inner Fortress</div>
+              <div class="match-story-detail">
+                <strong>கதையில் நடந்த நிகழ்வு:</strong> அரண்மலையின் உயரமான கருங்கற்கோட்டைகள் 400 போரியானைகளாலும் முற்றுகையாலும் ஒருநாள் தகர்க்கப்பட்டிருக்கலாம். ஆனால் மன்னன் அறிவன் தன் மனதில் அமைத்த “அறிவின் அரணை” எதிரி அரசன் வீரனாலோ அவனது 50,000 படைகளாலோ தகர்க்கவே முடியவில்லை.
+              </div>
+              <div class="match-moral-takeaway">
+                <strong>கதையின் நீதி:</strong> வெளிப்புறக் கற்கோட்டைகளும் செல்வமும் ஒருநாள் அழியலாம்; ஆனால் ஒரு மனிதன் தன் அறிவாலும் தீர்க்கதரிசனத்தாலும் அமைக்கும் மனக் கோட்டையை எந்த எதிரியாலும் அழிக்க முடியாது.
+              </div>
+            </div>
+
+            <!-- Match 3 -->
+            <div class="story-match-card">
+              <div class="match-kural-line">“உயிர்களைக் காத்த விவேகம்”</div>
+              <div class="match-subtag">Wisdom Preserving Human Lives</div>
+              <div class="match-story-detail">
+                <strong>கதையில் நடந்த நிகழ்வு:</strong> அரசன் முட்டாள்தனமாக போரிட்டிருந்தால், எளிய வீரனான மறவன் போர்க்களத்தில் மடிந்திருப்பான்; அவனது மனைவியும் பச்சிளங் குழந்தையும் திக்கற்றுப் போயிருப்பார்கள். அரசனின் அறிவுடைமை இரு தரப்பிலும் ஒரு துளி ரத்தமும் சிந்தாமல் 12,000 வீரர்களின் உயிர்களையும் அவர்களின் குடும்பங்களையும் காப்பாற்றியது.
+              </div>
+              <div class="match-moral-takeaway">
+                <strong>கதையின் நீதி:</strong> உண்மையான வலிமை என்பது பிறரை அழிப்பதில் இல்லை; அனைவரின் உயிர்களையும் காத்து அமைதியை நிலைநாட்டுவதே சிறந்த அறிவின் பயனாகும்.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Pillars of Story Moral -->
+        <div class="moral-pillars-section">
+          <h3 class="moral-pillars-title">கதையின் நீதி • MORAL OF THE STORY</h3>
+          <div class="moral-pillars-grid">
+            <div class="moral-pillar-card">
+              <div class="pillar-icon">🧠</div>
+              <h4 class="pillar-title">1. வலிமையை விட விவேகம் மேலானது</h4>
+              <p class="pillar-sub">Wisdom Over Raw Power</p>
+              <p class="pillar-desc">
+                50,000 படைகளை 12,000 படைகளால் வெல்ல முடிந்தது போரினால் அல்ல; எதிரியின் விநியோகப் பாதையை கூர்ந்து உணர்ந்த அறிவுடைமையால் மட்டுமே.
+              </p>
+            </div>
+
+            <div class="moral-pillar-card">
+              <div class="pillar-icon">💰</div>
+              <h4 class="pillar-title">2. பணம் காலத்தை மட்டுமே வாங்கும்</h4>
+              <p class="pillar-sub">Money Buys Time, Not Victory</p>
+              <p class="pillar-desc">
+                தங்கத்தால் கூலிப்படைகளை வாங்க முடிந்ததே தவிர, சிக்கலின் வேரைக் கண்டறிய முடியவில்லை. வெறும் செல்வம் நெருக்கடியைத் தீர்க்காது.
+              </p>
+            </div>
+
+            <div class="moral-pillar-card">
+              <div class="pillar-icon">🕊️</div>
+              <h4 class="pillar-title">3. சூழ்ச்சி ஆபத்தையே பெருக்கும்</h4>
+              <p class="pillar-sub">Deception Compounds Danger</p>
+              <p class="pillar-desc">
+                பொய்யான தூது நம்பிக்கையை இழக்கச் செய்து நாட்டைத் தனிமைப்படுத்தியது. நேர்மையான தீர்க்கதரிசனமே உண்மையான பாதுகாப்பைத் தரும்.
+              </p>
+            </div>
+
+            <div class="moral-pillar-card">
+              <div class="pillar-icon">🏰</div>
+              <h4 class="pillar-title">4. உள்ளழிக்க லாகா அரண்</h4>
+              <p class="pillar-sub">The Indestructible Mind</p>
+              <p class="pillar-desc">
+                கற்பாறை கோட்டைகள் முற்றுகையால் தகரலாம்; ஆனால் ஒரு மனிதன் சிந்தனையில் அமைக்கும் அறிவின் அரணை எவராலும் தகர்க்க முடியாது.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Final Eternal Takeaway -->
+        <div class="moral-takeaway-banner">
+          <p class="takeaway-tamil">
+            “நெருக்கடிகள் வரும்போது பதற்றத்தோடு செயல்படாதீர்; அமைதியாக ஆராய்ந்து விவேகத்தோடு முடிவெடுங்கள். அறிவே உங்களின் அழியாத அரண்.”
+          </p>
+          <p class="takeaway-eng">
+            “When life tests you with overwhelming storms, do not react with impulsive haste. Observe, understand, and act with wisdom. Wisdom is your fortress.”
+          </p>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="moral-actions-row">
+          <button class="cinema-btn secondary" id="btnMoralViewScripture">📜 VIEW PALM LEAF MANUSCRIPT</button>
+          <button class="cinema-btn primary pulse-gold" id="btnMoralRestart">↺ REPLAY THE EXPERIENCE (மீண்டும் தொடங்கு)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIALOGUE & NARRATION SUBTITLE OVERLAY (Netflix Cinema Style) -->
+    <div class="narration-viewport" id="narrationViewport">
+      <div class="speaker-tag" id="speakerTag">CHRONICLER</div>
+      <div class="subtitle-text-box">
+        <p class="subtitle-tamil" id="subTamil">அறிவற்றங் காக்குங் கருவி செறுவார்க்கும் உள்ளழிக்க லாகா அரண்.</p>
+        <p class="subtitle-english" id="subEnglish">What protects us when strength is not enough?</p>
+      </div>
+      <div class="subtitle-audio-row">
+        <button class="btn-read-aloud" id="btnReplaySpeech" title="Read caption aloud in Tamil" aria-label="Read caption aloud in Tamil">
+          <span class="read-icon">🔊</span>
+          <span class="read-text">🔊 தமிழில் வாசி (READ IN TAMIL)</span>
+        </button>
+      </div>
+      <div class="action-prompt-dock" id="actionPromptDock">
+        <button class="cinema-btn secondary prev-action-btn" id="btnPrevAction" title="Go to Previous Slide (முந்தைய காட்சி)" aria-label="Previous Slide">
+          <span class="btn-arrow">◀</span>
+          <span id="btnPrevActionText">PREVIOUS</span>
+        </button>
+        <button class="cinema-btn primary pulse-gold" id="btnNextAction">
+          <span id="btnActionText">ENTER THE STORY</span>
+          <span class="btn-arrow">▶</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         3D REALISTIC ANIMATED BOY NARRATOR RIG (இளங்கோ / ELANGO 3D GUIDE)
+         Interactive 3D animated character explaining the entire story & captions
+         ==================================================================== -->
+    <div class="narrator-boy-3d-dock" id="narratorBoyDock" aria-label="3D Boy Story Narrator Guide">
+      <!-- Interactive Speech Balloon -->
+      <div class="boy-speech-balloon" id="boySpeechBalloon">
+        <div class="balloon-header">
+          <div class="balloon-speaker-meta">
+            <span class="balloon-avatar-badge">🧒</span>
+            <span class="balloon-badge-text">வழிகாட்டி இளங்கோ • 3D GUIDE ELANGO</span>
+          </div>
+          <button class="balloon-speak-btn" id="btnBoySpeakCurrent" title="Listen to Elango explain this scene aloud in Tamil">
+            <span class="btn-audio-icon">🔊</span>
+            <span class="btn-audio-label">கேள் (LISTEN)</span>
+          </button>
+        </div>
+        <div class="balloon-body">
+          <p class="balloon-text-ta" id="boyExplanationText">
+            வணக்கம்! நான் இளங்கோ. இந்த வரலாற்றுப் போரின் உண்மைக் கதையையும் திருக்குறள் 421ன் ரகசியத்தையும் உங்களுக்கு விளக்குகிறேன்!
+          </p>
+          <p class="balloon-text-en" id="boyExplanationSubtext">
+            “Hello! I am Elango. Follow me as we discover how wisdom acts as an impregnable fortress!”
+          </p>
+        </div>
+        <div class="balloon-audio-visualizer" id="boyAudioWaveform">
+          <span class="b-wave bw-1"></span>
+          <span class="b-wave bw-2"></span>
+          <span class="b-wave bw-3"></span>
+          <span class="b-wave bw-4"></span>
+          <span class="b-wave bw-5"></span>
+        </div>
+        <div class="balloon-tail"></div>
+      </div>
+
+      <!-- 3D Realistic Character Rig & Dimensional Viewport -->
+      <div class="boy-avatar-container" id="boyAvatarContainer" role="button" tabindex="0" title="Touch Elango to open the interactive AI Chatbot! (என்னைத் தொட்டு பேசுங்கள்)">
+        <!-- 3D Ambient Base & Golden Aura -->
+        <div class="boy-ground-shadow"></div>
+        <div class="boy-golden-aura" id="boyGoldenAura"></div>
+
+        <!-- 3D Realistic Animated Image Model -->
+        <div class="boy-character-model" id="boyCharacterModel">
+          <div class="boy-realistic-figure-wrap" id="boyFigureWrap">
+            <img src="assets/elango_3d_boy.png" alt="3D Boy Character Elango (இளங்கோ)" class="boy-character-image" id="boyCharacterImg" />
+            <div class="boy-glow-rim"></div>
+            <!-- Interactive Talking Waves & Sparkles -->
+            <div class="boy-speaking-sparkles" id="boySpeakingSparkles">
+              <span class="sparkle-dot sp1">✦</span>
+              <span class="sparkle-dot sp2">✦</span>
+              <span class="sparkle-dot sp3">✦</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Guide Tag Badge & Chat Callout Pill -->
+        <div class="boy-guide-tag">
+          <span class="guide-tag-star">💬</span>
+          <span class="guide-tag-name">தொட்டுப் பேசு • TOUCH TO CHAT</span>
+        </div>
+      </div>
+
+      <!-- Minimize / Expand Toggle Pill -->
+      <button class="boy-dock-toggle-btn" id="btnToggleBoyDock" title="Minimize / Expand 3D Narrator Elango" aria-label="Toggle 3D Narrator">
+        <span class="toggle-icon-arrow" id="boyDockToggleIcon">▼</span>
+      </button>
+    </div>
+
+    <!-- ====================================================================
+         3D BOY INTERACTIVE CHATBOT MODAL (இளங்கோ உரையாடல் களம்)
+         Opens when touching the 3D boy character to ask questions and get instant answers
+         ==================================================================== -->
+    <div class="boy-chatbot-modal-overlay" id="boyChatbotModal" aria-hidden="true" role="dialog" aria-label="3D Boy Elango Chatbot">
+      <div class="boy-chatbot-window">
+        <!-- Chatbot Window Header -->
+        <div class="chatbot-header">
+          <div class="chatbot-profile">
+            <div class="chatbot-avatar-thumb">
+              <img src="assets/elango_3d_boy.png" alt="Elango Avatar" class="thumb-img">
+              <span class="online-status-dot" title="Online & Ready to Guide"></span>
+            </div>
+            <div class="chatbot-title-group">
+              <h3 class="chatbot-name">இளங்கோ (ELANGO 3D GUIDE)</h3>
+              <p class="chatbot-role">திருக்குறள் 421 & சங்கப் போர் கதை வழிகாட்டி • AI Story Companion</p>
+            </div>
+          </div>
+          <div class="chatbot-header-actions">
+            <button class="chat-voice-toggle-btn active" id="btnChatVoiceToggle" title="Toggle voice narration for chat replies" aria-label="Toggle Voice">
+              <span id="chatVoiceIcon">🔊</span>
+            </button>
+            <button class="chatbot-close-btn" id="btnBoyChatClose" title="Close Chatbox (மூடு)" aria-label="Close Chatbox">✕</button>
+          </div>
+        </div>
+
+        <!-- Chat Quick Question Prompts -->
+        <div class="chatbot-quick-prompts" id="chatbotQuickPrompts">
+          <span class="quick-prompt-label">விரைவுக் கேள்விகள் (QUICK QUESTIONS):</span>
+          <div class="prompt-chips-scroll">
+            <button class="prompt-chip" data-question="திருக்குறள் 421ன் பொருள் என்ன?">📜 திருக்குறள் 421 பொருள்</button>
+            <button class="prompt-chip" data-question="அரசன் அறிவன் போரை எவ்வாறு வென்றார்?">⚔️ மன்னர் அறிவன் வென்றது எப்படி?</button>
+            <button class="prompt-chip" data-question="நேரடி பலத்தால் தாக்கினால் ஏன் தோல்வி அடையும்?">💥 நேரடி மோதல் ஏன் தோற்றது?</button>
+            <button class="prompt-chip" data-question="வீரன் மறவனின் குடும்பத்தின் முக்கியத்துவம் என்ன?">👨‍👩‍👦 வீரன் மறவன் குடும்பம்</button>
+            <button class="prompt-chip" data-question="நவீன வாழ்க்கையில் இந்த குறளை எவ்வாறு பயன்படுத்துவது?">💼 நவீன வாழ்க்கை பயன்பாடு</button>
+            <button class="prompt-chip" data-question="அறிவே அரண் என்றால் என்ன?">🏰 அறிவே அரண் என்றால் என்ன?</button>
+          </div>
+        </div>
+
+        <!-- Chat Messages History -->
+        <div class="chatbot-messages-feed" id="boyChatMessagesFeed">
+          <!-- Initial Welcome Message from Elango -->
+          <div class="chat-bubble bot-bubble">
+            <div class="bubble-avatar">
+              <img src="assets/elango_3d_boy.png" alt="Elango">
+            </div>
+            <div class="bubble-content">
+              <div class="bubble-speaker">இளங்கோ (ELANGO)</div>
+              <p class="bubble-text-ta">
+                வணக்கம்! நான் உங்கள் வழிகாட்டி இளங்கோ. அரண்மலை போர், 50,000 படைகளை 12,000 வீரர்கள் அறிவால் எதிர்கொண்ட வியூகம், திருக்குறள் 421, அல்லது உங்கள் வாழ்க்கையில் இந்த நீதியை எவ்வாறு பயன்படுத்துவது என்று எதைப் பற்றி வேண்டுமானாலும் என்னிடம் கேளுங்கள்!
+              </p>
+              <p class="bubble-text-en">
+                “Greetings! Ask me anything about King Arivan’s strategy, why brute force failed, Thirukkural 421, or how wisdom shields you in modern challenges!”
+              </p>
+              <span class="bubble-time" id="chatInitTime">JUST NOW</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Typing Indicator -->
+        <div class="chat-typing-row" id="boyChatTypingRow" style="display: none;">
+          <div class="typing-bubble">
+            <span class="typing-dot d1"></span>
+            <span class="typing-dot d2"></span>
+            <span class="typing-dot d3"></span>
+            <span class="typing-label">இளங்கோ சிந்திக்கிறார் (Elango is answering)...</span>
+          </div>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form class="chatbot-input-bar" id="boyChatForm" onsubmit="return false;">
+          <input 
+            type="text" 
+            class="chat-text-input" 
+            id="boyChatTextInput" 
+            placeholder="இளங்கோவிடம் கேள்வி கேளுங்கள்... Ask Elango a question..." 
+            autocomplete="off"
+            aria-label="Ask a question"
+          />
+          <button type="submit" class="chat-send-btn" id="btnBoyChatSend" title="Send question (கேள்வி அனுப்பு)">
+            <span class="send-label">கேள் • ASK</span>
+            <span class="send-icon">🚀</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- CINEMATIC BLACKOUT CURTAIN FOR FINAL UNDERSTAND REVELATION -->
+    <div class="final-curtain-overlay" id="finalCurtain" aria-hidden="true">
+      <div class="curtain-content">
+        <p class="curtain-line-1" id="curtainLine1">“When everything else becomes uncertain…”</p>
+        <p class="curtain-line-2" id="curtainLine2">“Wisdom remains.”</p>
+        <div class="curtain-kural-gold">
+          <span class="curtain-glyph">✦</span>
+          <span class="curtain-tamil">அறிவே அரண்</span>
+          <span class="curtain-num">திருக்குறள் 421</span>
+        </div>
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button class="cinema-btn primary pulse-gold" id="btnCurtainToMoral">
+            📜 கதையின் நீதி & திருக்குறள் • MORAL & THIRUKKURAL →
+          </button>
+          <button class="cinema-btn secondary" id="btnCurtainRestart">
+            EXPERIENCE AGAIN ↺
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- External Script -->
+  <script src="script.js"></script>
+</body>
+</html>
